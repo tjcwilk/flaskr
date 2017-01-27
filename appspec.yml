@@ -1,0 +1,17 @@
+version: 0.0
+os: linux
+files:
+    - source: /
+      destination: /home/ec2-user/flaskr
+hooks:
+    BeforeInstall:
+        - location: codedeploy_beforeinstall.sh
+          runas: root
+    ApplicationStart:
+        - location: codedeploy_applicationstart.sh
+          timeout: 3600
+          runas: root
+    ValidateService:
+        - location: codedeploy_validateservice.sh
+          timeout: 180
+          runas: root

@@ -1,0 +1,64 @@
+sudo: false
+language: python
+python:
+- '2.7'
+#- '3.6'
+
+env:
+- REQUIREMENTS=release
+
+matrix:
+  exclude:
+  - python: '3.3'
+    env: REQUIREMENTS=lowest
+  - python: '3.3'
+    env: REQUIREMENTS=lowest-simplejson
+  - python: '3.4'
+    env: REQUIREMENTS=lowest
+  - python: '3.4'
+    env: REQUIREMENTS=lowest-simplejson
+  - python: '3.5'
+    env: REQUIREMENTS=lowest
+  - python: '3.5'
+    env: REQUIREMENTS=lowest-simplejson
+  - python: '3.6'
+    env: REQUIREMENTS=lowest
+  - python: '3.6'
+    env: REQUIREMENTS=lowest-simplejson
+
+install:
+  - pip install tox
+
+script:
+  - tox -e py-$REQUIREMENTS
+
+branches:
+  only:
+  - master
+
+before_deploy:
+  - zip -r latest *
+  - mkdir -p dpl_cd_upload
+  - mv latest.zip dpl_cd_upload/latest.zip
+
+deploy:
+  - provider: s3
+    access_key_id: "AKIAISP7BT5QAO4YLMKA"
+    secret_access_key: &1
+        secure: l6R9dEBz042F3vMhlg6iADW7GGiTsnPqWVay2p83pjgtsYsQ/sVALZNZ/8n4bcpIyFYjHpRy6QNJ/YgKDAgFD7pSyP8kmXcOAlcMGUKcLf11k+YDfRDYSDcXjrx2sL7qmGb0YyCjCZfgAPmBDc0aCIzs+AyR4Lg60VRjq0JqtAciAxNyBPGZVwgsa5A5u5AShXkDoestb80+ueyZwaEPB+AleC9/GPYfj6uXjmdSnuGiUxsbT7AFvfffuUF7ONnmDvxZEsnmH67dbFScunHDhZ+0wT6B4ELizk8kkqR1bhZeb+yzU0jhe+5Z3cCGKWCkejyvpd/wzAmNIDFQ/VEN5d0Y/APZalIBYMCrv/NTV3qqHl6Z+a4nFYDbOHOt0OiO/tyYe1mVafX5gz9Qtt6uYlB2p9g8UsA/zlEPMs5b17MPsuh82GHq2KkMjDg/J9Ku+lTjpZTnmYZso+grLZq7nojrycHkt3ATlsZGfsz5YftnemqrSmm2ql5WFWeO59yOnl+XnTsMa0UswMPJhBndFlb3MoC9i7q1kYiq8yh3kSpdE+yHfqBqIhMjWsy10ESKz6BXrcCIAtRzUdXaCBf0s045BYePLgAn39pOuwQUDYnQ8LWL+4QtEJYctGgIiqQ2iBkxDCqT4y6OwLQ5idBPiDOF3n31zOlLrE4hDiYsD0c=
+    local_dir: dpl_cd_upload
+    skip_cleanup: true
+    on: &2
+      repo: tobwilk/flaskr
+    bucket: flaskr-codedeploy
+  - provider: codedeploy
+    wait-until-deployed: true
+    access_key_id: AKIAISP7BT5QAO4YLMKA
+    secret_access_key: *1
+    bucket: flaskr-codedeploy
+    key: latest.zip
+    bundle_type: zip
+    application: flaskr
+    deployment_group: flaskr
+    region: eu-west-1
+    on: *2
