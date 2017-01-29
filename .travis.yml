@@ -1,43 +1,33 @@
 sudo: false
 language: python
-
 python:
-  - '2.7'
-
+- '2.7'
 install:
-  - pip install -r requirements.txt
-
+- pip install -r requirements.txt
 script:
-  - python flaskr/tests.py
-
+- python flaskr/tests.py
 branches:
   only:
-    - master
-
+  - master
 before_deploy:
-  - zip -r latest *
-  - mkdir -p dpl_cd_upload
-  - mv latest.zip dpl_cd_upload/latest.zip
-
+- mkdir -p dpl_cd_upload
+- mv latest.zip dpl_cd_upload/latest.zip
 deploy:
-  - provider: s3
-    access_key_id: AKIAISP7BT5QAO4YLMKA
-    secret_access_key: &1
-      secure: l6R9dEBz042F3vMhlg6iADW7GGiTsnPqWVay2p83pjgtsYsQ/sVALZNZ/8n4bcpIyFYjHpRy6QNJ/YgKDAgFD7pSyP8kmXcOAlcMGUKcLf11k+YDfRDYSDcXjrx2sL7qmGb0YyCjCZfgAPmBDc0aCIzs+AyR4Lg60VRjq0JqtAciAxNyBPGZVwgsa5A5u5AShXkDoestb80+ueyZwaEPB+AleC9/GPYfj6uXjmdSnuGiUxsbT7AFvfffuUF7ONnmDvxZEsnmH67dbFScunHDhZ+0wT6B4ELizk8kkqR1bhZeb+yzU0jhe+5Z3cCGKWCkejyvpd/wzAmNIDFQ/VEN5d0Y/APZalIBYMCrv/NTV3qqHl6Z+a4nFYDbOHOt0OiO/tyYe1mVafX5gz9Qtt6uYlB2p9g8UsA/zlEPMs5b17MPsuh82GHq2KkMjDg/J9Ku+lTjpZTnmYZso+grLZq7nojrycHkt3ATlsZGfsz5YftnemqrSmm2ql5WFWeO59yOnl+XnTsMa0UswMPJhBndFlb3MoC9i7q1kYiq8yh3kSpdE+yHfqBqIhMjWsy10ESKz6BXrcCIAtRzUdXaCBf0s045BYePLgAn39pOuwQUDYnQ8LWL+4QtEJYctGgIiqQ2iBkxDCqT4y6OwLQ5idBPiDOF3n31zOlLrE4hDiYsD0c=
-    local_dir: dpl_cd_upload
-    skip_cleanup: true
-    on: &2
-      repo: tobwilk/flaskr
-    bucket: flaskr-codedeploy
-    region: eu-west-1
-  - provider: codedeploy
-    wait-until-deployed: true
-    access_key_id: AKIAISP7BT5QAO4YLMKA
-    secret_access_key: *1
-    bucket: flaskr-codedeploy
-    key: latest.zip
-    bundle_type: zip
-    application: flaskr
-    deployment_group: flaskr
-    region: eu-west-1
-    on: *2
+- provider: s3
+  access_key_id: AKIAISP7BT5QAO4YLMKA
+  secret_access_key: &14371220
+    secure: akYEEBUcrAoxiAnLfk8nIknj6kHeOXMkYQtfTgJX81eEFin6hKH5ytMZo8T7Egyap9WbxczXHZS4wYGO5wtQVKGCU6n3uJB0r59olm9e0ccfLCo1j86QlilNI18/+p9obw+lcSi8rY4n6yGdH0bZfEaz4w+pweATBcQt1l3VbM5ZohCHCWmkDqvgUBn8AxrkYY+IIwCFrZvocyIM6B4fvZtDcYiWNyfAU+TW6Binz7XKldTHQTdWz4mWP17g31BJlEvQTmQ4GC0RxsJijFTOKdUhhMY1pjlR0wX8xIlyW+53MSwt1bOIcCWivpHfzdc3EdrQLd/moJ+2z/j7nQIg7qKnbx2Vw8ECLA5DWQUhbi08nLyMha9hE+0gCOGMtLOfrQAUEE/VUZ9VLluggNNxSnF4wYrekTFeKf/z+xVM+Q97Cu4uH9edyC0Cwxnng8P8wDciBUApj2kZMThW+Y9rX1IQA0fAK00IH6/Uz1dVLSBVYNDN5QuEZ/5euRIRcL/pqngbiaPeHQLhdNJ7mThg6+DIZV8OZTrWmCFr4ivIOu6xEno4Fx/gfxNmUAD2QRWWkOgYTTHrwl2LcSC3LE1MNCPbrFcux0FP6ekaWObmPaIHn+VlxBfdyUDyLSgIYsCe3qKwYqtTMv0lfPbKi5XMeW2Gll/4n6XpfIVltnzu00c=
+  local_dir: dpl_cd_upload
+  skip_cleanup: true
+  on: &12841200
+    repo: tobwilk/flaskr
+  bucket: flaskr-codedeploy
+- provider: codedeploy
+  access_key_id: AKIAISP7BT5QAO4YLMKA
+  secret_access_key: *14371220
+  bucket: flaskr-codedeploy
+  key: latest.zip
+  bundle_type: zip
+  application: flaskr
+  deployment_group: flaskr
+  on: *12841200
