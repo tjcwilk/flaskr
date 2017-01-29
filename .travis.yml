@@ -23,6 +23,7 @@ deploy:
   on: &12841200
     repo: tobwilk/flaskr
   bucket: flaskr-codedeploy
+  region: eu-west-1
 - provider: codedeploy
   access_key_id: AKIAISP7BT5QAO4YLMKA
   secret_access_key: *14371220
@@ -32,3 +33,4 @@ deploy:
   application: flaskr
   deployment_group: flaskr
   on: *12841200
+  region: eu-west-1
