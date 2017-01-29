@@ -29,6 +29,7 @@ deploy:
     on: &2
       repo: tobwilk/flaskr
     bucket: flaskr-codedeploy
+    region: eu-west-1
   - provider: codedeploy
     wait-until-deployed: true
     access_key_id: AKIAISP7BT5QAO4YLMKA
