@@ -18,7 +18,7 @@ class FlaskrTest(unittest.TestCase):
 
     def test_there_are_a_number_of_assertions(self):
 
-        assertTrue(True)
+        self.assertTrue(True)
         #assertFalse(x, msg=None)
         #assertIsNone(x, msg=None)
         #assertIsNotNone(x, msg=None)
