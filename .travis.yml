@@ -5,7 +5,7 @@ python:
 install:
 - pip install -r requirements.txt
 script:
-- python flaskr/tests.py
+    - python -m unittest discover test
 branches:
   only:
   - master
