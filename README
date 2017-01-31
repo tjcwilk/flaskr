@@ -1,38 +1,49 @@
-                         / Flaskr /
-
-                 a minimal blog application
+                         / Continuouse Integration Demo - Flaskr /
 
 
-    ~ What is Flaskr?
+# INTRODUCTION
 
-      A sqlite powered thumble blog application
+Flaskr is an example web application that comes bundled with the flask web framework. This repository is a copy of this application, set up so that changes to the application are automatically run though continuouse integration tooling and on to automated deployment.
 
-    ~ How do I use it?
+    1) Travis CI Watches for changes in the mater branch
 
-      1. edit the configuration in the flaskr.py file or
-         export an FLASKR_SETTINGS environment variable
-         pointing to a configuration file.
+    2) Travis will initate automated tests which will either block or allow the pipeline
 
-      2. install the app from the root of the project directory
+    3) Travis will pass execution over to AWS-CodeDeploy
 
-         pip install --editable .
+    4) AWS-CodeDeploy will trigger the actions to kill any currently running flaskr application and deploy the new one.
 
-      3. Instruct flask to use the right application
 
-         export FLASK_APP=flaskr
+# THE APPLICATION - FLASKR
 
-      4. initialize the database with this command:
+The example application is called 'flaskr'. It is a simple bulletin board application backed by a local sqlite database. With the correct credentials, you can log in, post a message and log out.
 
-         flask initdb
+Flask serves up browser side code from the HTLM and CSS in the /templates directory. Flask also allows the easy implementation of API endpoints that the front end then calls.
 
-      5. now you can run flaskr:
+For reference, this is how you install and run the flaskr application on a machine:
 
-         flask run
+    1.  Install the dependencie
 
-         the application will greet you on
-         http://localhost:5000/
+    pip install .
 
-    ~ Is it tested?
+    2. instruct flask to use the application
 
-      You betcha.  Run `python setup.py test` to see
-      the tests pass.
+    export FLASK_APP=flask
+
+    3. Initialise the database
+
+    flask initdb
+
+    4. run the application
+
+    flask run 
+    note: to listen on an external interface use --host=0.0.0.0. Set the port with --port=8080
+
+  
+
+# TRAVIS_CI
+
+# AWS-CODEDEPLOY
+
+# SECURITY OF CI
+
