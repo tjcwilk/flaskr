@@ -8,7 +8,7 @@ class FlaskrTest(unittest.TestCase):
         self.assertTrue(True)
 
     def test_i_will_always_fail(self):
-        self.assertTrue(False)
+        self.assertTrue(False, "This test will always fail, dont panic!")
 
     def test_i_will_always_error(self):
         raise RuntimeError('Test error!')
