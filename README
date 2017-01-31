@@ -3,7 +3,9 @@
 
 # INTRODUCTION
 
-Flaskr is an example web application that comes bundled with the flask web framework. This repository is a copy of this application, set up so that changes to the application are automatically run though continuouse integration tooling and on to automated deployment.
+    Flaskr is an example web application that comes bundled with the flask web framework. This 
+    repository is a copy of this application, set up so that changes to the application are 
+    automatically run though continuouse integration tooling and on to automated deployment.
 
     1) Travis CI Watches for changes in the mater branch
 
@@ -11,72 +13,96 @@ Flaskr is an example web application that comes bundled with the flask web frame
 
     3) Travis will pass execution over to AWS-CodeDeploy
 
-    4) AWS-CodeDeploy will trigger the actions to kill any currently running flaskr application and deploy the new one.
+    4) AWS-CodeDeploy will trigger the actions to kill any currently running flaskr application 
+       and deploy the new one.
 
 
 # THE APPLICATION - FLASKR
 
-The example application is called 'flaskr'. It is a simple bulletin board application backed by a local sqlite database. With the correct credentials, you can log in, post a message and log out.
+    The example application is called 'flaskr'. It is a simple bulletin board application backed 
+    by a local sqlite database. With the correct credentials, you can log in, post a message and
+     log out.
 
-Flask serves up browser side code from the HTLM and CSS in the /templates directory. Flask also allows the easy implementation of API endpoints that the front end then calls.
+    Flask serves up browser side code from the HTLM and CSS in the /templates directory. Flask 
+    also allows the easy implementation of API endpoints that the front end then calls.
 
-For reference, this is how you install and run the flaskr application on a machine:
+    For reference, this is how you install and run the flaskr application on a machine:
 
-    1.  Install the dependencie
+        1.  Install the dependencie
 
-    pip install .
+            pip install .
 
-    2. instruct flask to use the application
+        2. instruct flask to use the application
 
-    export FLASK_APP=flaskr
+            export FLASK_APP=flaskr
 
-    3. Initialise the database
+        3. Initialise the database
 
-    flask initdb
+            flask initdb
 
-    4. run the application
+        4. run the application
 
-    flask run 
+            flask run 
+
     note: to listen on an external interface use --host=0.0.0.0. Set the port with --port=8080
+          Later in the aws-codeDeploy section, what you will notice is that the deployment scripts
+          basically do this.
 
   
 
 # TRAVIS_CI
 
-Travis-CI is basically a Software As A Service (SaaS) offering of a continuouse integration platform. You log into travis with your github.com credentials and it loads up all your repositories. You flick a switch for the repositories you want travis to watch.
+    Travis-CI is basically a Software As A Service (SaaS) offering of a continuouse integration 
+    platform. You log into travis with your github.com credentials and it loads up all your 
+    repositories. You flick a switch for the repositories you want travis to watch.
 
-Travis looks for a .travis.yml file in the root of your applications repository. In this file you specify all the actions that you want travis to carry out when a change is triggered.  In this example, we are tunning the tests in the tests.py file. If they pass, the travis AWS-S3 and AWS-CodeDeploy travis module kicks in.
+    Travis looks for a .travis.yml file in the root of your applications repository. In this file 
+    you specify all the actions that you want travis to carry out when a change is triggered.  In 
+    this example, we are tunning the tests in the tests.py file. If they pass, the travis AWS-S3 
+    and AWS-CodeDeploy travis module kicks in.
 
 
 # AWS-CODEDEPLOY
 
-Travis will bundle up the application into a .zip file and upload it into an S3 bucket. From here it will use an AWS API key and give the AWS CodeDeploy service a kick. AWS-CodeDeploy is set to watch this S3 bucket for the application, unbundle it and read the appspec.yml file in the root directory. This appspec.yml file will tell AWS-CodeDeploy what it should do within a specified EC2 Instance (or group of instances).
+    Travis will bundle up the application into a .zip file and upload it into an S3 bucket. From
+    here it will use an AWS API key and give the AWS CodeDeploy service a kick. AWS-CodeDeploy is
+    set to watch this S3 bucket for the application, unbundle it and read the appspec.yml file in
+    the root directory. This appspec.yml file will tell AWS-CodeDeploy what it should do within a
+    specified EC2 Instance (or group of instances).
 
 
 # SECURITY OF CI
 
-There are a number of different issues to look out for with regard to the security of the CI Process
+    There are a number of different issues to look out for with regard to the security of the CI 
+    Process
 
     1) Is my development environment secure?
 
-        If i carry out all my code development and managing of the deployment process on a dodgy system that is not itself secure, everything else is also at risk.
+        If i carry out all my code development and managing of the deployment process on a dodgy 
+        system that is not itself secure, everything else is also at risk.
 
     2) Triggering CI Deployment
 
-        CI can trigger on all branches or pull requests which I turned off.
-        anyone can triger a pull request, including an attacker.
-        In my development team, anyone can create branches, bit my master branch is protected.
+        CI can trigger on all branches or pull requests which I turned off. anyone can triger a 
+        pull request, including an attacker. In my development team, anyone can create branches, 
+        bit my master branch is protected.
 
     3) Reviewing changes
         
-        As CI is only triggered from changes in the master branch and I am the only one who can accept changes (as im trusted), I oversee the review and managment process. 
+        As CI is only triggered from changes in the master branch and I am the only one who can 
+        accept changes (as im trusted), I oversee the review and managment process. 
 
-        Code commits need to be small, well comented and the diff simple. If not I cant understand whats going on, I will reject it
+        Code commits need to be small, well comented and the diff simple. If not I cant understand
+        whats going on, I will reject it
 
 
     4) Injecting secrets
 
-        travis needs my AWS API key (in the .travis.yml file) so that it can upload my application to S3 and trigger codeDeploy. if I put my key in the source code for all to see, anyone can steal it. Instead, I used the travis CLI tool to encrypt the key before putting it in the source code. (im guessing) that it uses the cravis-CI's public key to encrypt the key so travis is the only person who can decrypt it.
+        travis needs my AWS API key (in the .travis.yml file) so that it can upload my application
+         to S3 and trigger codeDeploy. if I put my key in the source code for all to see, anyone 
+        can steal it. Instead, I used the travis CLI tool to encrypt the key before putting it in 
+        the source code. (im guessing) that it uses the cravis-CI's public key to encrypt the key
+        so travis is the only person who can decrypt it.
 
 
 
