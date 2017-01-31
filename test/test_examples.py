@@ -3,19 +3,7 @@ import unittest
 import json
 import flaskr
 
-class FlaskrTest(unittest.TestCase):
-
-    def test_i_will_always_pass(self):
-        self.assertTrue(True)
-
-
-    #def test_i_will_always_fail(self):
-    #    self.assertTrue(False, "This test will always fail, dont panic!")
-
-
-    #def test_i_will_always_error(self):
-    #    raise RuntimeError('Test error!')
-
+class ExampleTest(unittest.TestCase):
 
     def test_there_are_a_number_of_assertions(self):
 
@@ -65,30 +53,6 @@ class FixturesTest(unittest.TestCase):
     def test(self):
         #print('in test()')
         self.assertEqual(self.fixture, range(1, 10))
-
-
-
-class FirewallRuleTest(unittest.TestCase):
-
-    FIREWALL_CONFIG = os.path.join(os.path.dirname(__file__), '../fake_firewall_config.json')
-
-    def setUp(self):
-
-        print "-] Testing firewall rules for security compliance"
-
-        with open(self.FIREWALL_CONFIG) as data_file:    
-                self.firewalljson = json.load(data_file)
-
-
-    def test_no_telnet(self):
-
-        is_there_telnet = False
-
-        for allow_rule in self.firewalljson["allow"]:
-            if str(allow_rule).find("23") != -1:
-                is_there_telnet = True    
-
-        self.assertFalse(is_there_telnet, "TEST FAILED: telnet in use and is insecure")
 
 
 
