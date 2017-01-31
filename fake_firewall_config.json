@@ -1,0 +1,11 @@
+{
+    "description" : "This is a fake firewall configuration",
+    "allow" : [
+        {"port" : "23"},
+        {"port" : "80"},
+        {"port" : "443"}
+    ],
+    "deny" : [
+        {"port" : "*"}    
+    ] 
+}

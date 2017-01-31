@@ -1,5 +1,5 @@
 import unittest
-
+import json
 import flaskr
 
 class FlaskrTest(unittest.TestCase):
@@ -48,21 +48,39 @@ class FlaskrTest(unittest.TestCase):
 
 
 
-
 class FixturesTest(unittest.TestCase):
+
 
     def setUp(self):
         print('In setUp()')
         self.fixture = range(1, 10)
 
+
     def tearDown(self):
         print('In tearDown()')
         del self.fixture
+
 
     def test(self):
         print('in test()')
         self.assertEqual(self.fixture, range(1, 10))
 
+
+
+class FirewallRuleTest(unittest.TestCase):
+
+
+    FIREWALL_CONFIG = os.path.join(os.path.dirname(__file__), '../take_firewall_config.json')
+
+
+    def setUp(self):
+
+        with open('data.json') as data_file:    
+                self.firewalljson = json.load(FIREWALL_CONFIG)
+
+
+    def test_no_telnet(self):
+        print self.firewalljson
 
 
 
